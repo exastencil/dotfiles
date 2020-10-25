@@ -13,3 +13,18 @@ files directly in your `$HOME` directory with git bare directory named
  dot commit -m "Add .bashrc"
  dot push origin master
 ```
+
+## Tools I use
+
+- [Oh My Zsh](https://ohmyz.sh) for a friendlier shell
+- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) for better shell awareness
+- [tmux](https://github.com/tmux/tmux) for multiplexing
+
+- [Vim](https://www.vim.org) for editing files
+- [Lynx](https://lynx.invisible-island.net) for browsing the web
+
+- [asdf](https://asdf-vm.com) for language version management
+
+- [Ruby](https://www.ruby-lang.org) for scripting and web development
+- [Go](https://golang.org) for scripting and web development
+- [V](https://vlang.io) for scripting and web development

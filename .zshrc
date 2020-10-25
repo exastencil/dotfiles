@@ -60,6 +60,9 @@ DISABLE_UPDATE_PROMPT="true"
 # much, much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
+# Ignore group permissions on Linuxbrew completions
+ZSH_DISABLE_COMPFIX="true"
+
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # You can set one of the optional three formats:
@@ -76,7 +79,7 @@ DISABLE_UPDATE_PROMPT="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(asdf cp git heroku tmux)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -103,9 +106,6 @@ alias dotzsh="vim ~/.zshrc"
 
 # Command to manage the version control of dotfiles
 alias dot='git --git-dir=/home/exastencil/.dotfiles/ --work-tree=/home/exastencil'
-
-# Add brew command for Linux
-eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
