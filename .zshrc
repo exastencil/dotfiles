@@ -107,5 +107,8 @@ alias dotzsh="vim ~/.zshrc"
 # Command to manage the version control of dotfiles
 alias dot='git --git-dir=/home/exastencil/.dotfiles/ --work-tree=/home/exastencil'
 
+# Convenient DuckDuckGo search
+function \? { lynx duckduckgo.com/lite\?kd=-1\&kp=-1\&q=$1 }
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
