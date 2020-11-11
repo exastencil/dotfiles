@@ -1,40 +1,147 @@
+let skip_defaults_vim=1
 set nocompatible              " be iMproved, required
-filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" Visual Information
+set number                   " show line numbers
+set ruler                    " show column and row information
+set showmode                 " show current mode
+set listchars=tab:→\ ,eol:↲,nbsp:␣,space:·,trail:·,extends:⟩,precedes:⟨
+set shortmess=aoOtI          " avoids many 'Hit Enter...' messages
+set background=dark          " higher contrast
+set nocursorline             " no underline or highlight for current line
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" Plugins
-Plugin 'wakatime/vim-wakatime' " Track time spent
-
-" Language Support
-Plugin 'ollykel/v-vim' " V
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+" Indentation Settings
+set autoindent
 set tabstop=2                " shorter tabs to not waste visible space
 set softtabstop=2
 set shiftwidth=2             " shift with 2 spaces or 1 tab
 set smartindent
+set smarttab
 
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" Layout Settings
+set nofixendofline
+set textwidth=72             " space for line numbers & gutter
 
-" Avoid creation of swap files
+" Swap File and Backup Settings
+set autowrite
+set nobackup
 set noswapfile
+set nowritebackup
+set hidden                   " ignore buffer with changes warnings
+
+" Search Settings
+set hlsearch                 " highlight search results
+set incsearch                " start highlighting while typing
+set linebreak
+map <silent> <leader><cr> :noh<cr>:redraw!<cr>
+
+" Bracket Matching
+let g:loaded_match_paren=1
+set noshowmatch              " don't show matches, it's confusing
+set foldmethod=manual
+
+" Paste and History Settings
+set history=100              " don't need massive command history
+set viminfo='20,<1000,s1000  " prevents truncated yanks and deletes
+
+" Disable pane navigation and use tmux instead
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
+
+" Input settings
+set ttyfast                  " faster keypress for scrolling
+
+" Just the defaults, these are changed per filetype by plugins.
+" Most of the utility of all of this has been superceded by the use of
+" modern simplified pandoc for capturing knowledge source instead of
+" arbitrary raw text files.
+
+set formatoptions-=t   " don't auto-wrap text using text width
+set formatoptions+=c   " autowrap comments using textwidth with leader
+set formatoptions-=r   " don't auto-insert comment leader on enter in insert
+set formatoptions-=o   " don't auto-insert comment leader on o/O in normal
+set formatoptions+=q   " allow formatting of comments with gq
+set formatoptions-=w   " don't use trailing whitespace for paragraphs
+set formatoptions-=a   " disable auto-formatting of paragraph changes
+set formatoptions-=n   " don't recognized numbered lists
+set formatoptions+=j   " delete comment prefix when joining
+set formatoptions-=2   " don't use the indent of second paragraph line
+set formatoptions-=v   " don't use broken 'vi-compatible auto-wrapping'
+set formatoptions-=b   " don't use broken 'vi-compatible auto-wrapping'
+set formatoptions+=l   " long lines not broken in insert mode
+set formatoptions+=m   " multi-byte character line break support
+set formatoptions+=M   " don't add space before or after multi-byte char
+set formatoptions-=B   " don't add space between two multi-byte chars in join
+set formatoptions+=1   " don't break a line after a one-letter word
+
+" Syntax Settings (needed for Plugins)
+syntax enable
+filetype plugin on
+
+" Install vim-plug if not already installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+  echo "Don't forget to GoInstallBinaries if you're doing Go dev."
+endif
+
+" Load Plugins if Plug detected
+if filereadable(expand("~/.vim/autoload/plug.vim"))
+
+  " load all the plugins
+  call plug#begin('~/.vimplugins')
+	" Track time spent
+	Plug 'wakatime/vim-wakatime' 
+
+	" Vim Prompt
+  Plug 'vim-airline/vim-airline'
+  Plug 'PProvost/vim-ps1'
+
+  " Go Language Support
+  Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+
+	" V Language Support
+	Plug 'ollykel/v-vim'
+
+	" JavaScript Language Support
+  Plug 'pangloss/vim-javascript'
+  
+	" Show git statuses in the gutter
+	Plug 'airblade/vim-gitgutter'
+
+	" Not sure what this is
+  Plug 'sheerun/vim-polyglot'
+  call plug#end()
+
+	" Prompt Settings
+  colorscheme ron
+  "hi Normal ctermbg=NONE " for transparent background
+  set noshowmode
+
+  " Go Language Support
+  let g:go_fmt_fail_silently = 0     " let me out even with errors
+  let g:go_fmt_command = 'goimports' " autoupdate import
+  let g:go_fmt_autosave = 1
+  let g:go_gopls_enabled = 1
+  "let g:go_gopls_analyses = { 'composites' : v:false }
+  au FileType go nmap <leader>t :GoTest!<CR>
+  au FileType go nmap <leader>v :GoVet!<CR>
+  au FileType go nmap <leader>b :GoBuild!<CR>
+  au FileType go nmap <leader>i :GoInstall!<CR>
+  au FileType go nmap <leader>l :GoMetaLinter!<CR>
+
+else
+  autocmd vimleavepre *.go !gofmt -w % " backup if fatih fails
+endif
+
+" Identify some known file types
+au bufnewfile,bufRead *.bash* set ft=sh
+au bufnewfile,bufRead *.profile set filetype=sh
+au bufnewfile,bufRead *.crontab set filetype=crontab
+au bufnewfile,bufRead *ssh/config set filetype=sshconfig
+au bufnewfile,bufRead *gitconfig set filetype=gitconfig
+au bufnewfile,bufRead /tmp/psql.edit.* set syntax=sql
+
