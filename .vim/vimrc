@@ -93,30 +93,31 @@ if filereadable(expand("~/.vim/autoload/plug.vim"))
 
   " load all the plugins
   call plug#begin('~/.vimplugins')
-	" Track time spent
-	Plug 'wakatime/vim-wakatime' 
+  " Track time spent
+  Plug 'wakatime/vim-wakatime' 
 
-	" Vim Prompt
+  " Vim Prompt
   Plug 'vim-airline/vim-airline'
-  Plug 'PProvost/vim-ps1'
+  "Plug 'PProvost/vim-ps1'
 
   " Go Language Support
   Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
-	" V Language Support
-	Plug 'ollykel/v-vim'
+  " V Language Support
+  Plug 'ollykel/v-vim'
 
-	" JavaScript Language Support
+  " Gemini (text/gemini) syntax
+  Plug 'https://tildegit.org/sloum/gemini-vim-syntax'
+
+  " JavaScript Language Support
   Plug 'pangloss/vim-javascript'
   
-	" Show git statuses in the gutter
-	Plug 'airblade/vim-gitgutter'
+  " Show git statuses in the gutter
+  Plug 'airblade/vim-gitgutter'
 
-	" Not sure what this is
-  Plug 'sheerun/vim-polyglot'
   call plug#end()
 
-	" Prompt Settings
+  " Prompt Settings
   colorscheme ron
   "hi Normal ctermbg=NONE " for transparent background
   set noshowmode
